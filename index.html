@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Smart Cafe Billing System</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f4f6f9;
+margin:0;
+text-align:center;
+}
+
+header{
+background:#222;
+color:white;
+padding:20px;
+}
+
+.container{
+width:60%;
+margin:auto;
+margin-top:30px;
+background:white;
+padding:20px;
+box-shadow:0 0 10px gray;
+border-radius:10px;
+}
+
+table{
+width:100%;
+margin-bottom:20px;
+border-collapse: collapse;
+}
+
+th{
+background:#eee;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+button{
+padding:6px 12px;
+margin:3px;
+cursor:pointer;
+border:none;
+background:#007bff;
+color:white;
+border-radius:5px;
+}
+
+button:hover{
+background:#0056b3;
+}
+
+.bill{
+margin-top:20px;
+background:#fafafa;
+padding:15px;
+border-radius:8px;
+}
+
+#receipt{
+margin-top:15px;
+text-align:left;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>☕ Smart Cafe Billing & Management System</h1>
+</header>
+
+<div class="container">
+
+<table>
+
+<tr>
+<th>Item</th>
+<th>Price</th>
+<th>Quantity</th>
+</tr>
+
+<tr>
+<td>Coffee</td>
+<td>₹80</td>
+<td>
+<button onclick="changeQty('coffee',-1)">-</button>
+<span id="coffee">0</span>
+<button onclick="changeQty('coffee',1)">+</button>
+</td>
+</tr>
+
+<tr>
+<td>Tea</td>
+<td>₹40</td>
+<td>
+<button onclick="changeQty('tea',-1)">-</button>
+<span id="tea">0</span>
+<button onclick="changeQty('tea',1)">+</button>
+</td>
+</tr>
+
+<tr>
+<td>Burger</td>
+<td>₹150</td>
+<td>
+<button onclick="changeQty('burger',-1)">-</button>
+<span id="burger">0</span>
+<button onclick="changeQty('burger',1)">+</button>
+</td>
+</tr>
+
+<tr>
+<td>Sandwich</td>
+<td>₹120</td>
+<td>
+<button onclick="changeQty('sandwich',-1)">-</button>
+<span id="sandwich">0</span>
+<button onclick="changeQty('sandwich',1)">+</button>
+</td>
+</tr>
+
+<tr>
+<td>Pasta</td>
+<td>₹180</td>
+<td>
+<button onclick="changeQty('pasta',-1)">-</button>
+<span id="pasta">0</span>
+<button onclick="changeQty('pasta',1)">+</button>
+</td>
+</tr>
+
+</table>
+
+<button onclick="generateBill()">Generate Bill</button>
+<button onclick="clearOrder()">Clear Order</button>
+
+<div class="bill">
+
+<h2>Bill Summary</h2>
+
+<p>Subtotal: ₹ <span id="subtotal">0</span></p>
+<p>GST (5%): ₹ <span id="gst">0</span></p>
+<h3>Total: ₹ <span id="total">0</span></h3>
+
+<div id="receipt"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let prices = {
+
+coffee:80,
+tea:40,
+burger:150,
+sandwich:120,
+pasta:180
+
+};
+
+function changeQty(item,amount){
+
+let element = document.getElementById(item);
+
+let value = parseInt(element.innerText);
+
+value += amount;
+
+if(value < 0){
+
+value = 0;
+
+}
+
+element.innerText = value;
+
+}
+
+function generateBill(){
+
+let subtotal = 0;
+
+let receipt = "<h3>Receipt</h3>";
+
+for(let item in prices){
+
+let qty = parseInt(document.getElementById(item).innerText);
+
+let itemTotal = qty * prices[item];
+
+if(qty > 0){
+
+receipt += item + " x " + qty + " = ₹" + itemTotal + "<br>";
+
+}
+
+subtotal += itemTotal;
+
+}
+
+let gst = subtotal * 0.05;
+
+let total = subtotal + gst;
+
+document.getElementById("subtotal").innerText = subtotal;
+
+document.getElementById("gst").innerText = gst.toFixed(2);
+
+document.getElementById("total").innerText = total.toFixed(2);
+
+receipt += "<hr><b>Total: ₹" + total.toFixed(2) + "</b>";
+
+document.getElementById("receipt").innerHTML = receipt;
+
+}
+
+function clearOrder(){
+
+let items = ["coffee","tea","burger","sandwich","pasta"];
+
+items.forEach(function(item){
+
+document.getElementById(item).innerText = 0;
+
+});
+
+document.getElementById("subtotal").innerText = 0;
+
+document.getElementById("gst").innerText = 0;
+
+document.getElementById("total").innerText = 0;
+
+document.getElementById("receipt").innerHTML = "";
+
+}
+
+</script>
+
+</body>
+</html>
